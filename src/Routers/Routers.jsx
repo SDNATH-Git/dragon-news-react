@@ -5,6 +5,12 @@ import {
 import HomeLayout from "../Layout/HomeLayout";
 import Home from "../page/Home";
 import CategoryNews from "../page/CategoryNews";
+import Login from "../page/Login";
+import Register from "../page/Register";
+import AuthLayout from "../Layout/AuthLayout";
+import NewsDetails from "../components/NewsDetails";
+import PrevideRoute from "../Provider/PrevideRoute";
+import Loading from "../components/Loading";
 
 const router = createBrowserRouter([
     {
@@ -17,14 +23,35 @@ const router = createBrowserRouter([
             },
             {
                 path: "/category/:id",
-                element: <CategoryNews></CategoryNews>,
+                element: <CategoryNews> </CategoryNews>,
                 loader: () => fetch("/news.json"),
+                hydrateFallbackElement: <Loading></Loading>,
             }
         ]
     },
     {
-        path: "/Home",
-        element: <div>Home</div>,
+        path: "/auth",
+        element: <AuthLayout></AuthLayout>,
+        children: [
+            {
+                path: "/auth/Login",
+                element: <Login></Login>,
+            },
+            {
+                path: "/auth/Register",
+                element: <Register></Register>,
+            }
+        ]
+    },
+    {
+        path: "/news-Details/:id",
+        element:
+            <PrevideRoute>
+                <NewsDetails></NewsDetails>
+            </PrevideRoute>
+        ,
+        loader: () => fetch("/news.json"),
+        hydrateFallbackElement: <Loading></Loading>,
     },
     {
         path: "/*",
